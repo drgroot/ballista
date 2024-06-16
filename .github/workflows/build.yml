@@ -26,7 +26,7 @@ jobs:
       - name: Checkout Ballista
         uses: actions/checkout@v4
         with:
-          repository: https://github.com/apache/datafusion-ballista.git
+          repository: apache/datafusion-ballista
           fetch-depth: 1
           ref: refs/tags/{{ inputs.version }}
     
