@@ -28,7 +28,7 @@ jobs:
         with:
           repository: apache/datafusion-ballista
           fetch-depth: 1
-          ref: refs/tags/{{ inputs.version }}
+          ref: {{ inputs.version }}
     
       - name: Build Ballista
         run: ./dev/build-ballista-docker.sh
