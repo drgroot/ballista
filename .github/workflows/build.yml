@@ -28,7 +28,7 @@ jobs:
         with:
           repository: apache/datafusion-ballista
           fetch-depth: 1
-          ref: refs/tags/{{ inputs.version }}
+          ref: refs/tags/0.12.0
     
       - name: Build Ballista
         run: ./dev/build-ballista-docker.sh
@@ -36,8 +36,8 @@ jobs:
       - name: Push Ballista
         if: github.ref_name != 'main'
         run: |
-            docker tag apache/arrow-ballista-scheduler:{{ inputs.version }} yusufali/arrow-ballista-scheduler
-            docker tag apache/arrow-ballista-executor:{{ inputs.version }} yusufali/arrow-ballista-executor
+            docker tag apache/arrow-ballista-scheduler:0.12.0 yusufali/arrow-ballista-scheduler
+            docker tag apache/arrow-ballista-executor:0.12.0 yusufali/arrow-ballista-executor
 
             docker push yusufali/arrow-ballista-scheduler
             docker push yusufali/arrow-ballista-executor
