@@ -23,20 +23,33 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Setup Version
+        env:
+          BALLISTA_INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          VERSION=${BALLISTA_INPUT_VERSION:='0.12.0'}
+
+          echo BALLISTA_VERSION=$VERSION >> $GITHUB_ENV
+
+      - name: Echo Version
+        env:
+          BALLISTA_VERSION: ${{ env.BALLISTA_VERSION }}
+        run: echo "Building Ballista version $BALLISTA_VERSION"
+
       - name: Checkout Ballista
         uses: actions/checkout@v4
         with:
           repository: apache/datafusion-ballista
           fetch-depth: 1
-          ref: refs/tags/0.12.0
+          ref: refs/tags/${{ env.BALLISTA_VERSION }}
     
       - name: Build Ballista
         run: ./dev/build-ballista-docker.sh
 
       - name: Tag Ballista
         run: |
-            docker tag apache/arrow-ballista-scheduler:0.12.0 yusufali/arrow-ballista-scheduler
-            docker tag apache/arrow-ballista-executor:0.12.0 yusufali/arrow-ballista-executor
+            docker tag apache/arrow-ballista-scheduler:${{ env.BALLISTA_VERSION }} yusufali/arrow-ballista-scheduler
+            docker tag apache/arrow-ballista-executor:${{ env.BALLISTA_VERSION }} yusufali/arrow-ballista-executor
       
       - name: Push Ballista
         if: github.ref_name == 'main'
